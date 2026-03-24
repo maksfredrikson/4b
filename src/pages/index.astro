@@ -1,17 +1,58 @@
 ---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+function slugify(id: string) {
+  return id.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+}
 ---
+<Base title="Ornament Research">
+  <style>
+    .intro { margin-bottom: 4rem; }
+    .intro p { font-size: 1.15rem; color: #444; max-width: 55ch; }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .post-list { list-style: none; padding: 0; }
+    .post-list li { border-top: 1px solid var(--rule); padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    .post-list li:last-child { border-bottom: 1px solid var(--rule); }
+    .post-list a { text-decoration: none; font-size: 1.05rem; }
+    .post-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .post-date { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+    .all-posts { margin-top: 1.5rem; font-family: var(--sans); font-size: 0.85rem; }
+  </style>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <section class="intro">
+    <h1>Who defines the meaning of an ornament?</h1>
+    <p>
+      A master's research project exploring Belarusian folklore ornaments,
+      participatory design, and the dynamics of cultural identity.
+    </p>
+  </section>
+
+  <section>
+    <p class="section-label">Recent posts</p>
+    <ul class="post-list">
+      {posts.map(post => (
+        <li>
+          <a href={`/blog/${slugify(post.id)}`}>{post.data.title}</a>
+          <span class="post-date">{formatDate(post.data.date)}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="all-posts"><a href="/blog">All posts &rarr;</a></p>
+  </section>
+</Base>

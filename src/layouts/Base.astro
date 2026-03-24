@@ -1,0 +1,89 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Ornament Research — a master\'s project on folklore, identity, and participatory design.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --ink: #1a1a1a;
+        --muted: #666;
+        --rule: #e0e0e0;
+        --bg: #fafaf8;
+        --link: #1a1a1a;
+        --link-hover: #555;
+        --max: 680px;
+        --font: 'Georgia', 'Times New Roman', serif;
+        --sans: system-ui, -apple-system, sans-serif;
+      }
+
+      html { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 18px; line-height: 1.7; }
+
+      body { min-height: 100vh; display: flex; flex-direction: column; }
+
+      .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+      /* Nav */
+      header { border-bottom: 1px solid var(--rule); padding: 1.25rem 0; }
+      header .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+      .site-name { font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+      nav { display: flex; gap: 1.5rem; }
+      nav a { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); text-decoration: none; }
+      nav a:hover { color: var(--ink); }
+
+      /* Main */
+      main { flex: 1; padding: 3rem 0 5rem; }
+
+      /* Footer */
+      footer { border-top: 1px solid var(--rule); padding: 1.5rem 0; }
+      footer p { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); }
+
+      /* Typography */
+      h1 { font-size: 1.9rem; line-height: 1.25; font-weight: normal; margin-bottom: 0.4rem; }
+      h2 { font-size: 1.35rem; font-weight: normal; margin: 2.2rem 0 0.6rem; }
+      h3 { font-size: 1.05rem; font-weight: 600; font-family: var(--sans); margin: 1.8rem 0 0.4rem; }
+      p { margin-bottom: 1.2rem; }
+      ul, ol { padding-left: 1.4rem; margin-bottom: 1.2rem; }
+      li { margin-bottom: 0.3rem; }
+      strong { font-weight: 600; }
+      a { color: var(--link); }
+      a:hover { color: var(--link-hover); }
+
+      /* Prose block */
+      .prose img { max-width: 100%; height: auto; margin: 2rem 0; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a class="site-name" href="/">Ornament Research</a>
+        <nav>
+          <a href="/blog">Posts</a>
+          <a href="/about">About</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+    <footer>
+      <div class="wrap">
+        <p>Ornament Research &mdash; M. Luhouski</p>
+      </div>
+    </footer>
+  </body>
+</html>

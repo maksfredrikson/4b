@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: {
+      slug: post.id.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+    },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+<Base title={`${post.data.title} — Ornament Research`}>
+  <style>
+    .post-header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--rule); padding-bottom: 1.5rem; }
+    .post-header h1 { margin-bottom: 0.5rem; }
+    .post-date { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+    .prose { max-width: 65ch; }
+    .back { margin-top: 3.5rem; font-family: var(--sans); font-size: 0.85rem; }
+  </style>
+
+  <article>
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <time class="post-date" datetime={post.data.date.toISOString()}>
+        {formatDate(post.data.date)}
+      </time>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+  <p class="back"><a href="/blog">&larr; All posts</a></p>
+</Base>

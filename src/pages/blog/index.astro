@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function slugify(id: string) {
+  return id.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+<Base title="Posts — Ornament Research">
+  <style>
+    h1 { margin-bottom: 2.5rem; }
+    .post-list { list-style: none; padding: 0; }
+    .post-list li { border-top: 1px solid var(--rule); padding: 1.25rem 0; }
+    .post-list li:last-child { border-bottom: 1px solid var(--rule); }
+    .post-list a { text-decoration: none; font-size: 1.1rem; display: block; margin-bottom: 0.2rem; }
+    .post-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .post-meta { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); }
+  </style>
+
+  <h1>Posts</h1>
+  <ul class="post-list">
+    {posts.map(post => (
+      <li>
+        <a href={`/blog/${slugify(post.id)}`}>{post.data.title}</a>
+        <span class="post-meta">{formatDate(post.data.date)}</span>
+      </li>
+    ))}
+  </ul>
+</Base>

@@ -1,0 +1,291 @@
+{
+  "main": {
+    "id": "c23abe979726ca00",
+    "type": "split",
+    "children": [
+      {
+        "id": "ce108975c4af59cc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f28d3073593eb14a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Posts/Stitches for Belarus.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Stitches for Belarus"
+            }
+          },
+          {
+            "id": "abb8f34840d655b7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Posts/Stitches for Belarus.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Stitches for Belarus"
+            }
+          },
+          {
+            "id": "bfb420924e26ffa3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "About/About.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "About"
+            }
+          },
+          {
+            "id": "d06875b9ff25a8c1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "tmp/Post_tmp.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Post_tmp"
+            }
+          },
+          {
+            "id": "47eba4f7e6b3bac7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "About/About.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "About"
+            }
+          },
+          {
+            "id": "5129de4584523597",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Posts/Fading Sage.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Fading Sage"
+            }
+          }
+        ],
+        "currentTab": 5
+      },
+      {
+        "id": "3742a1087d8a0d7c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "743bb5010d18ae54",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f08e23e031db7f57",
+    "type": "split",
+    "children": [
+      {
+        "id": "2e6fb40d7f94c36e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6b48c2afd6583bcf",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "9390a20b1cc8b4bb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "27f953a5a42d5421",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e2b0a545546b5dac",
+    "type": "split",
+    "children": [
+      {
+        "id": "064989db5881664a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2e83aa4cd54f0fdf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "S2 Network Map.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for S2 Network Map"
+            }
+          },
+          {
+            "id": "529c7d418bcf3bc3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "S2 Network Map.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from S2 Network Map"
+            }
+          },
+          {
+            "id": "10de1c138cecbf97",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ed59ae828f50a4d2",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "a564f76038b25ebc",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "S2 Network Map.canvas",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of S2 Network Map"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "5129de4584523597",
+  "lastOpenFiles": [
+    "Posts/Stitches for Belarus.md",
+    "Posts/Fading Sage.md",
+    "Posts/assets/fading-sage.jpg",
+    "About/About.md",
+    "Posts/assets",
+    "Posts/untitled folder",
+    "Posts/Layers of Meaning.md",
+    "tmp/Post_tmp.md",
+    "Untitled",
+    "tmp",
+    "About",
+    "Posts",
+    "Untitled.canvas",
+    "S2 Network Map.canvas",
+    "Welcome.md"
+  ]
+}
