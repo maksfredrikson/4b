@@ -1,58 +1,264 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+  .slice(0, 6);
+
+const site = await getEntry('config', 'site');
 
 function slugify(id: string) {
   return id.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 }
 
 function formatDate(d: Date) {
-  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 ---
 <Base title="Solar Singularity">
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js" slot="head"></script>
+
   <style>
-    .intro { margin-bottom: 4rem; }
-    .intro p { font-size: 1.15rem; color: #444; max-width: 55ch; }
-    .section-label {
-      font-family: var(--sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
+    .home-grid {
+      grid-template-columns: minmax(180px, 1fr) 1.25fr 1.35fr;
     }
+
+    /* Column 1 */
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.75rem;
+    }
+    .nav-links li { border-top: 1px solid var(--rule); }
+    .nav-links li:last-child { border-bottom: 1px solid var(--rule); }
+    .nav-links a {
+      display: block;
+      padding: 0.4rem 0;
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+
     .post-list { list-style: none; padding: 0; }
-    .post-list li { border-top: 1px solid var(--rule); padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    .post-list li {
+      border-top: 1px solid var(--rule);
+      padding: 0.5rem 0;
+    }
     .post-list li:last-child { border-bottom: 1px solid var(--rule); }
-    .post-list a { text-decoration: none; font-size: 1.05rem; }
-    .post-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
-    .post-date { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
-    .all-posts { margin-top: 1.5rem; font-family: var(--sans); font-size: 0.85rem; }
+    .post-list a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      line-height: 1.35;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+    .post-list a:hover { text-decoration: underline; text-underline-offset: 2px; }
+    .post-date {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .all-posts {
+      margin-top: 0.9rem;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+    }
+
+    /* Column 2 */
+    .headline {
+      font-size: 2rem;
+      line-height: 1.1;
+      font-weight: normal;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.1rem;
+    }
+    .lead {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #2a2a2a;
+      border-top: 2px solid var(--ink);
+      padding-top: 0.7rem;
+    }
+
+    /* Column 3 — ornament */
+    .col-ornament {
+      padding: 0 !important;
+      position: relative;
+      overflow: hidden;
+    }
+    #ornament-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #ornament-wrap canvas {
+      display: block;
+    }
   </style>
 
-  <section class="intro">
-    <h1>Who defines the meaning of an ornament?</h1>
-    <p>
-      A master's research project exploring Belarusian folklore ornaments,
-      participatory design, and the dynamics of cultural identity.
-    </p>
-  </section>
+  <div class="page-grid page-grid--fill home-grid">
 
-  <section>
-    <p class="section-label">Recent posts</p>
-    <ul class="post-list">
-      {posts.map(post => (
-        <li>
-          <a href={`/blog/${slugify(post.id)}`}>{post.data.title}</a>
-          <span class="post-date">{formatDate(post.data.date)}</span>
-        </li>
-      ))}
-    </ul>
-    <p class="all-posts"><a href="/blog">All posts &rarr;</a></p>
-  </section>
+    <!-- Col 1: Identity + Nav + Recent Posts -->
+    <div class="col">
+      <p class="col-label">Contents</p>
+      <ul class="nav-links">
+        <li><a href="/blog">Posts &rarr;</a></li>
+        <li><a href="/about">About &rarr;</a></li>
+      </ul>
+
+      <p class="col-label">Recent</p>
+      <ul class="post-list">
+        {posts.map(post => (
+          <li>
+            <a href={`/blog/${slugify(post.id)}`}>{post.data.title}</a>
+            <span class="post-date">{formatDate(post.data.date)}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="all-posts"><a href="/blog">All posts &rarr;</a></p>
+    </div>
+
+    <!-- Col 2: Headline + Description from site.md -->
+    <div class="col">
+      <p class="col-label">Research</p>
+      <h1 class="headline">{site?.data.headline ?? 'Solar Singularity'}</h1>
+      <p class="lead">{site?.data.description}</p>
+    </div>
+
+    <!-- Col 3: p5.js Belarusian folk ornament -->
+    <div class="col col-ornament">
+      <div id="ornament-wrap"></div>
+    </div>
+
+  </div>
+
+  <script is:inline>
+    (function () {
+      if (window._ornamentSketch) {
+        window._ornamentSketch.remove();
+        window._ornamentSketch = null;
+      }
+
+      window._ornamentSketch = new p5(function (p) {
+        var t = 0;
+        var BG_R = 245, BG_G = 240, BG_B = 232;
+        var RED_R = 120, RED_G = 22, RED_B = 22;
+        var u = 40;
+
+        p.setup = function () {
+          var el = document.getElementById('ornament-wrap');
+          var w = el ? el.offsetWidth : 380;
+          var h = el ? el.offsetHeight : 700;
+          if (w < 10) w = 380;
+          if (h < 10) h = 700;
+          var cnv = p.createCanvas(w, h);
+          cnv.parent('ornament-wrap');
+          u = Math.max(28, Math.min(48, w / 9));
+        };
+
+        p.draw = function () {
+          p.background(BG_R, BG_G, BG_B);
+          t += 0.004;
+
+          var scroll = (t * 14) % (u * 1.3);
+          var cols = Math.ceil(p.width / u) + 3;
+          var rows = Math.ceil(p.height / (u * 0.75)) + 4;
+
+          for (var row = -2; row < rows; row++) {
+            var offset = (row % 2 !== 0) ? u * 0.5 : 0;
+            var cy = row * u * 0.75 - scroll;
+
+            for (var col = -2; col < cols; col++) {
+              var cx = col * u + offset;
+              drawMotif(cx, cy);
+            }
+          }
+
+          // Zigzag border bands every ~5 rows
+          var bandPeriod = u * 5 * 0.75;
+          for (var by = -bandPeriod * 2; by < p.height + bandPeriod * 2; by += bandPeriod) {
+            drawZigzag(by - scroll * 0.6);
+          }
+        };
+
+        function drawMotif(cx, cy) {
+          var rx = u * 0.42;
+          var ry = u * 0.31;
+          var ir = rx * 0.34;
+          var iy = ry * 0.34;
+          var arm = rx * 0.88;
+          var armY = ry * 0.88;
+          var gap = ir * 1.05;
+          var gapY = iy * 1.05;
+
+          // Outer diamond (cream fill, red stroke)
+          p.stroke(RED_R, RED_G, RED_B);
+          p.strokeWeight(1.2);
+          p.fill(BG_R, BG_G, BG_B);
+          p.beginShape();
+          p.vertex(cx, cy - ry);
+          p.vertex(cx + rx, cy);
+          p.vertex(cx, cy + ry);
+          p.vertex(cx - rx, cy);
+          p.endShape(p.CLOSE);
+
+          // Cross arms (4 lines from gap to outer edge)
+          p.stroke(RED_R, RED_G, RED_B);
+          p.strokeWeight(1.2);
+          p.line(cx - arm, cy, cx - gap, cy);
+          p.line(cx + gap, cy, cx + arm, cy);
+          p.line(cx, cy - armY, cx, cy - gapY);
+          p.line(cx, cy + gapY, cx, cy + armY);
+
+          // Filled center diamond
+          p.fill(RED_R, RED_G, RED_B);
+          p.noStroke();
+          p.beginShape();
+          p.vertex(cx, cy - iy);
+          p.vertex(cx + ir, cy);
+          p.vertex(cx, cy + iy);
+          p.vertex(cx - ir, cy);
+          p.endShape(p.CLOSE);
+
+          // Corner dots at diamond tips
+          var dotR = u * 0.05;
+          p.ellipse(cx - rx * 0.88, cy, dotR, dotR);
+          p.ellipse(cx + rx * 0.88, cy, dotR, dotR);
+          p.ellipse(cx, cy - ry * 0.88, dotR, dotR);
+          p.ellipse(cx, cy + ry * 0.88, dotR, dotR);
+        }
+
+        function drawZigzag(y) {
+          var step = u * 0.52;
+          var h = u * 0.22;
+          p.fill(RED_R, RED_G, RED_B);
+          p.noStroke();
+          p.beginShape();
+          p.vertex(-step, y + h);
+          var goUp = true;
+          for (var x = -step; x <= p.width + step * 2; x += step) {
+            p.vertex(x, goUp ? y : y + h);
+            goUp = !goUp;
+          }
+          p.vertex(p.width + step, y + h);
+          p.endShape(p.CLOSE);
+        }
+
+        p.windowResized = function () {
+          var el = document.getElementById('ornament-wrap');
+          if (el && el.offsetWidth > 10 && el.offsetHeight > 10) {
+            p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+            u = Math.max(28, Math.min(48, el.offsetWidth / 9));
+          }
+        };
+      });
+    })();
+  </script>
 </Base>

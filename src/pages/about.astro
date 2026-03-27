@@ -1,44 +1,94 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="About — Ornament Research">
+<Base title="About — Solar Singularity">
   <style>
-    .prose { max-width: 65ch; }
-    h1 { margin-bottom: 2rem; }
+    .about-grid {
+      align-items: start;
+    }
+    .section-intro {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #2a2a2a;
+      margin-bottom: 0.85rem;
+    }
+    .about-headline {
+      font-size: 1.45rem;
+      line-height: 1.2;
+      font-weight: normal;
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.01em;
+    }
+    ul.question-list {
+      list-style: none;
+      padding: 0;
+    }
+    ul.question-list li {
+      border-top: 1px solid var(--rule);
+      padding: 0.5rem 0;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    ul.question-list li:last-child {
+      border-bottom: 1px solid var(--rule);
+    }
   </style>
-  <div class="prose">
-    <h1>About</h1>
-    <h3>Cultural Startup</h3>
-    <p>
-      Master's research project exploring folklore ornaments, participatory design,
-      and meaning-making in cultural identity.
-    </p>
-    <p>
-      The project draws on <strong>folklore as a collective authorship model</strong>.
-      Historically, national patterns emerged through distributed craft practices —
-      distilling shared traits into ornament. This research proposes a contemporary
-      analogue: a digitally mediated folklore process.
-    </p>
-    <p>
-      Meaning is treated as dynamic and context-dependent. Authority over symbolic
-      definition shifts from institutions to participants. The ornament becomes a
-      living interface between individual perception and collective identity.
-    </p>
-    <h3>Question</h3>
-    <p>Who defines the meaning of an ornament?</p>
-    <ul>
-      <li>What are the characteristics of the Belarusian national ornament?</li>
-      <li>How can abstract ornamental motifs be described and interpreted?</li>
-      <li>What can an act of reading ornament reveal about the people of Belarus?</li>
-      <li>How to balance inclusion with the material constraints in national identity?</li>
-      <li>How can the process of folklore authorship be replicated through digital technology?</li>
-      <li>Is the final output a democratic average or a map of plural identities?</li>
-    </ul>
-    <h3>Goal</h3>
-    <p>
-      Explore how a crowdsourced, generative process can produce new ornamental
-      variations reflecting diverse, present-day Belarusian perspectives — while
-      maintaining cultural recognisability.
-    </p>
+
+  <div class="page-grid about-grid">
+
+    <!-- Col 1: Project identity -->
+    <div class="col">
+      <p class="col-label">Cultural Startup</p>
+      <h1 class="about-headline">Belarusian Ornament Research</h1>
+      <p class="section-intro">
+        Master's research project exploring folklore ornaments, participatory design,
+        and meaning-making in cultural identity.
+      </p>
+      <p class="section-intro">
+        The project draws on <strong>folklore as a collective authorship model</strong>.
+        Historically, national patterns emerged through distributed craft practices —
+        distilling shared traits into ornament. This research proposes a contemporary
+        analogue: a digitally mediated folklore process.
+      </p>
+      <p class="section-intro">
+        Meaning is treated as dynamic and context-dependent. Authority over symbolic
+        definition shifts from institutions to participants. The ornament becomes a
+        living interface between individual perception and collective identity.
+      </p>
+    </div>
+
+    <!-- Col 2: Research questions -->
+    <div class="col">
+      <p class="col-label">Questions</p>
+      <p style="font-size: 1rem; font-weight: normal; margin-bottom: 1rem; font-style: italic;">
+        Who defines the meaning of an ornament?
+      </p>
+      <ul class="question-list">
+        <li>What are the characteristics of the Belarusian national ornament?</li>
+        <li>How can abstract ornamental motifs be described and interpreted?</li>
+        <li>What can an act of reading ornament reveal about the people of Belarus?</li>
+        <li>How to balance inclusion with the material constraints in national identity?</li>
+        <li>How can the process of folklore authorship be replicated through digital technology?</li>
+        <li>Is the final output a democratic average or a map of plural identities?</li>
+      </ul>
+    </div>
+
+    <!-- Col 3: Goal + meta -->
+    <div class="col">
+      <p class="col-label">Goal</p>
+      <p class="section-intro">
+        Explore how a crowdsourced, generative process can produce new ornamental
+        variations reflecting diverse, present-day Belarusian perspectives — while
+        maintaining cultural recognisability.
+      </p>
+      <hr />
+      <p class="col-label" style="margin-top: 1.25rem;">Project</p>
+      <p style="font-family: var(--sans); font-size: 0.72rem; color: var(--muted); line-height: 1.6;">
+        Solar Singularity<br />
+        M. Luhouski<br />
+        Master's Research, 2026
+      </p>
+    </div>
+
   </div>
 </Base>

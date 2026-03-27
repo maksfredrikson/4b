@@ -19,25 +19,101 @@ function formatDate(d: Date) {
   return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 ---
-<Base title={`${post.data.title} — Ornament Research`}>
+<Base title={`${post.data.title} — Solar Singularity`}>
   <style>
-    .post-header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--rule); padding-bottom: 1.5rem; }
-    .post-header h1 { margin-bottom: 0.5rem; }
-    .post-date { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
-    .prose { max-width: 65ch; }
-    .back { margin-top: 3.5rem; font-family: var(--sans); font-size: 0.85rem; }
+    .post-grid {
+      grid-template-columns: minmax(160px, 200px) 1fr 1fr;
+      align-items: start;
+    }
+
+    /* Sidebar */
+    .post-meta-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .post-title-sidebar {
+      font-size: 0.82rem;
+      line-height: 1.35;
+      font-weight: normal;
+      margin-bottom: 1rem;
+      font-family: var(--font);
+    }
+    .post-date-sidebar {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+    .back-link {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      text-decoration: none;
+      color: var(--muted);
+    }
+    .back-link:hover { color: var(--ink); }
+
+    /* Content area spanning cols 2+3 */
+    .post-content-col {
+      grid-column: 2 / -1;
+    }
+
+    .post-headline {
+      font-size: 1.75rem;
+      line-height: 1.15;
+      font-weight: normal;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.015em;
+    }
+    .post-byline {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .prose {
+      columns: 2;
+      column-gap: 1.5rem;
+      column-rule: 1px solid var(--rule);
+    }
+    .prose p { font-size: 0.9rem; line-height: 1.6; orphans: 2; widows: 2; }
+    .prose h2 { column-span: all; }
+    .prose img { max-width: 100%; height: auto; margin: 1.25rem 0; column-span: all; }
   </style>
 
-  <article>
-    <header class="post-header">
-      <h1>{post.data.title}</h1>
-      <time class="post-date" datetime={post.data.date.toISOString()}>
+  <div class="page-grid post-grid">
+
+    <!-- Col 1: Metadata sidebar -->
+    <div class="col">
+      <p class="col-label">Article</p>
+      <a class="back-link" href="/blog">&larr; All posts</a>
+      <br /><br />
+      <p class="post-meta-label">Title</p>
+      <p class="post-title-sidebar">{post.data.title}</p>
+      <p class="post-meta-label">Date</p>
+      <time class="post-date-sidebar" datetime={post.data.date.toISOString()}>
         {formatDate(post.data.date)}
       </time>
-    </header>
-    <div class="prose">
-      <Content />
     </div>
-  </article>
-  <p class="back"><a href="/blog">&larr; All posts</a></p>
+
+    <!-- Cols 2+3: Article content -->
+    <div class="col post-content-col">
+      <h1 class="post-headline">{post.data.title}</h1>
+      <p class="post-byline">
+        {formatDate(post.data.date)} &mdash; Solar Singularity
+      </p>
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+  </div>
 </Base>
