@@ -20,13 +20,15 @@ function formatDate(d: Date) {
 }
 ---
 <Base title={`${post.data.title} — Solar Singularity`}>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js" slot="head"></script>
+
   <style>
     .post-grid {
-      grid-template-columns: minmax(160px, 200px) 1fr 1fr;
-      align-items: start;
+      grid-template-columns: minmax(160px, 200px) 1fr minmax(220px, 260px);
+      align-items: stretch;
     }
 
-    /* Sidebar */
+    /* Col 1 — sidebar */
     .post-meta-label {
       font-family: var(--sans);
       font-size: 0.6rem;
@@ -57,11 +59,7 @@ function formatDate(d: Date) {
     }
     .back-link:hover { color: var(--ink); }
 
-    /* Content area spanning cols 2+3 */
-    .post-content-col {
-      grid-column: 2 / -1;
-    }
-
+    /* Col 2 — prose */
     .post-headline {
       font-size: 1.75rem;
       line-height: 1.15;
@@ -79,14 +77,24 @@ function formatDate(d: Date) {
       padding-bottom: 0.5rem;
       margin-bottom: 1.25rem;
     }
-    .prose {
-      columns: 2;
-      column-gap: 1.5rem;
-      column-rule: 1px solid var(--rule);
+    .prose p { font-size: 0.9rem; line-height: 1.6; orphans: 3; widows: 3; }
+    .prose h2 { margin-top: 1.5rem; }
+    .prose img { max-width: 100%; height: auto; margin: 1.25rem 0; }
+
+    /* Col 3 — binary grid */
+    .col-binary {
+      padding: 0 !important;
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
     }
-    .prose p { font-size: 0.9rem; line-height: 1.6; orphans: 2; widows: 2; }
-    .prose h2 { column-span: all; }
-    .prose img { max-width: 100%; height: auto; margin: 1.25rem 0; column-span: all; }
+    #binary-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #binary-wrap canvas { display: block; }
   </style>
 
   <div class="page-grid post-grid">
@@ -104,16 +112,136 @@ function formatDate(d: Date) {
       </time>
     </div>
 
-    <!-- Cols 2+3: Article content -->
-    <div class="col post-content-col">
+    <!-- Col 2: Article prose (pretext measures this) -->
+    <div class="col" id="prose-col">
       <h1 class="post-headline">{post.data.title}</h1>
       <p class="post-byline">
         {formatDate(post.data.date)} &mdash; Solar Singularity
       </p>
-      <div class="prose">
+      <div class="prose" id="prose-content">
         <Content />
       </div>
     </div>
 
+    <!-- Col 3: p5.js 23×61 binary grid -->
+    <div class="col col-binary">
+      <div id="binary-wrap"></div>
+    </div>
+
   </div>
+
+  <!-- Pretext: measure prose lines, sync grid density -->
+  <script>
+    import { prepareWithSegments, layoutNextLine } from '@chenglou/pretext';
+
+    function measureProse() {
+      const proseEl = document.getElementById('prose-content') as HTMLElement | null;
+      if (!proseEl) return;
+
+      const text = proseEl.innerText.trim();
+      const colWidth = proseEl.offsetWidth;
+      if (!text || colWidth < 10) return;
+
+      // 0.9rem × 14px base = 12.6px, Georgia
+      const prepared = prepareWithSegments(text, '12.6px Georgia');
+      const lineHeightPx = 14 * 1.6; // matches .prose p line-height
+
+      let cursor = { segmentIndex: 0, graphemeIndex: 0 };
+      let lineCount = 0;
+      while (layoutNextLine(prepared, cursor, colWidth) !== null) lineCount++;
+
+      const totalHeight = Math.round(lineCount * lineHeightPx);
+      // Expose to p5 sketch via dataset for dynamic row scaling
+      document.getElementById('binary-wrap')?.setAttribute('data-line-count', String(lineCount));
+      document.getElementById('binary-wrap')?.setAttribute('data-text-height', String(totalHeight));
+    }
+
+    document.addEventListener('DOMContentLoaded', measureProse);
+    document.addEventListener('astro:page-load', measureProse);
+  </script>
+
+  <!-- p5.js 23×61 binary grid -->
+  <script is:inline>
+    (function () {
+      if (window._binarySketch) {
+        window._binarySketch.remove();
+        window._binarySketch = null;
+      }
+
+      window._binarySketch = new p5(function (p) {
+        var COLS = 23;
+        var ROWS = 61;
+        var t = 0;
+        var flipTimers = [];
+
+        p.setup = function () {
+          var el = document.getElementById('binary-wrap');
+          var w = el ? el.offsetWidth : 240;
+          var h = el ? el.offsetHeight : 700;
+          if (w < 10) w = 240;
+          if (h < 10) h = 700;
+          var cnv = p.createCanvas(w, h);
+          cnv.parent('binary-wrap');
+
+          // Init per-cell flip timers with noise-seeded offsets
+          for (var r = 0; r < ROWS; r++) {
+            flipTimers[r] = [];
+            for (var c = 0; c < COLS; c++) {
+              flipTimers[r][c] = p.random(0, 1);
+            }
+          }
+
+          p.textFont('monospace');
+          p.noStroke();
+        };
+
+        p.draw = function () {
+          p.background(245, 240, 232);
+          t += 0.008;
+
+          // Use line count from pretext measurement to modulate animation speed
+          var el = document.getElementById('binary-wrap');
+          var lineCount = el ? parseInt(el.getAttribute('data-line-count') || '61') : 61;
+          var speedMod = p.constrain(lineCount / 61, 0.5, 2.0);
+
+          var cellW = p.width / COLS;
+          var cellH = p.height / ROWS;
+          var fontSize = p.min(cellW * 0.72, cellH * 0.78);
+          p.textSize(fontSize);
+          p.textAlign(p.CENTER, p.CENTER);
+
+          for (var r = 0; r < ROWS; r++) {
+            for (var c = 0; c < COLS; c++) {
+              // Perlin noise: slow wave scrolling diagonally
+              var n = p.noise(
+                c * 0.25,
+                r * 0.18 - t * speedMod * 0.6,
+                t * 0.4
+              );
+
+              var val = n > 0.52 ? 1 : 0;
+
+              // Dim cells near threshold (uncertain / transitioning)
+              var certainty = p.abs(n - 0.52) / 0.48; // 0=edge, 1=solid
+              var alpha = p.lerp(18, 200, p.pow(certainty, 0.6));
+
+              // Highlight a slow-moving diagonal wave
+              var wave = p.sin(c * 0.38 - r * 0.22 + t * 1.4);
+              if (wave > 0.82) alpha = p.min(255, alpha + 55);
+
+              p.fill(120, 22, 22, alpha);
+              p.text(val, c * cellW + cellW / 2, r * cellH + cellH / 2);
+            }
+          }
+        };
+
+        p.windowResized = function () {
+          var el = document.getElementById('binary-wrap');
+          if (el && el.offsetWidth > 10 && el.offsetHeight > 10) {
+            p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+          }
+        };
+      });
+    })();
+  </script>
 </Base>
