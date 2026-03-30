@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Read(//Users/Maksim_Luhouski/**)"
+      "Read(//Users/Maksim_Luhouski/**)",
+      "Bash(find '/Users/Maksim_Luhouski/Library/Mobile Documents/com~apple~CloudDocs/MD/s2/4b' -not -path */node_modules/* -not -path */.git/* -not -path */dist/* -not -path */.astro/types.d.ts -type f)",
+      "Bash(npm run:*)",
+      "Bash(node -e \"const m = require\\(''''/Users/Maksim_Luhouski/Library/Mobile Documents/com~apple~CloudDocs/MD/s2/4b/node_modules/astro/transitions/index.js''''\\); console.log\\(Object.keys\\(m\\)\\)\")",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install:*)"
     ]
   }
 }
